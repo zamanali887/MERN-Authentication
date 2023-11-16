@@ -1,7 +1,18 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function Navbar() {
+
+  const navigate = useNavigate();
+
+  const handleLogout =()=> {
+
+    localStorage.removeItem('jwToken')
+    // localStorage.setItem('jwToken' ,"")
+  
+    navigate('/auth/login')
+
+  }
   return (
     <>
     <nav className="navbar navbar-expand-lg bg-light">
@@ -24,6 +35,9 @@ export default function Navbar() {
         </li>
         <li className="nav-item">
           <Link className="fw-bold nav-link" to="/auth/register">SIGN-UP</Link>
+        </li>
+        <li className="nav-item">
+          <button className='btn btn-danger ' onClick={handleLogout}>LogOut</button>
         </li>
       </ul>
     

@@ -31,9 +31,26 @@ router.use(express.json());
     })
 
 
+// Login router
 
 
+router.post("/login" ,async(req ,res )=>{
+    const user = req.body
 
+    const verifyEmail = await authModel.findOne({email:user.email})
+
+    if(!verifyEmail){
+        return res.status(404).json({messege :"User Not Found"})
+    }
+    const verifyPassword = bcrypt.compare(user.password, verifyEmail.password)
+
+    if(!verifyPassword){
+        return res.status(404).json({messege:"user password incorrect"})
+    }
+    var token = jwt.sign({id: verifyEmail._id}, process.env.PRIVITE_KEY);
+
+    return res.status(200).json({messege:"user logged in" , token});
+})
 
 
 

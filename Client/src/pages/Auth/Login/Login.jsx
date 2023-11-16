@@ -1,6 +1,7 @@
 import { message } from 'antd';
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 const initialState = { email: "", Password: "" }
@@ -15,11 +16,28 @@ export default function Login() {
     
     const URL = "http://localhost:8000";
 
-
+    const navigate = useNavigate();
 
 
     const handleLogin = () =>{
+    
+        let {email ,password } = state
         
+        const data ={
+            email ,password
+        }
+
+        axios.post(`${URL}/auth/login` , data)
+        .then(res =>{
+            const getToken = res.data.token
+            localStorage.setItem("jwToken" , getToken)
+            navigate('/')
+            
+            
+        }).catch((err)=>{
+            console.log('err', err)
+        })
+
     }
 
 
